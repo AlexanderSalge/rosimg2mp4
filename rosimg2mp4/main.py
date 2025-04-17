@@ -8,6 +8,7 @@ from cv_bridge import CvBridge
 import cv2
 from datetime import datetime
 from typing import Tuple
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 
 RED="\033[31m"
 YELLOW="\033[33m"
@@ -29,7 +30,11 @@ class ImageSaverNode(Node):
                 msg_type=Image,
                 topic=rgb_image_topic_name,
                 callback=self.image_callback,
-                qos_profile=10,
+                qos_profile=QoSProfile
+                (
+                    depth=10,
+                    reliability=ReliabilityPolicy.BEST_EFFORT,
+                ),
             )
         self.bridge = CvBridge()
         self.video_writer = \
